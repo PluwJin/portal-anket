@@ -15,4 +15,7 @@ class DefaultController extends \kouosl\base\controllers\frontend\BaseController
     {
         return $this->render('_index');
     }
+    public function actionYaz(){
+        return $this->render('yaz');
+    }
 }
