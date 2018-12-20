@@ -4,10 +4,10 @@
     <div class="jumbotron">
         <h1>Anket Modülü</h1>
 
-        <p class="lead">Örnek uygulamayı başarılı bir şekilde çalıştırdınız.</p>
+        <p class="lead">Devam Etmek için Tıklayınız:</p>
 
-        <p><a class="btn btn-lg btn-success" href="anket/create">Modüller ve konfürgasyon!</a></p>
-        <p><a class="btn btn-lg btn-success" href="anket/create">Modüller ve konfürgasyon!</a></p>
+        <p><a class="btn btn-lg btn-success" href="anket/survey">Anketler</a></p>
+        <p><a class="btn btn-lg btn-success" href="anket/create">Anket Oluştur</a></p>
     </div>
     
 
