@@ -40,6 +40,7 @@ class SurveyController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Survey::find(),
+            'pagination'=>['pageSize'=>20],
         ]);
 
         return $this->render('index', [
@@ -55,9 +56,13 @@ class SurveyController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $model=$this->findModel($id);
+        if($model->ending_at>=date('Y-m-d')){
+        return $this->render('view',['model'=>$model]);
+        }
+        else{
+            return $this->redirect(['index']);
+        }
     }
 
     /**

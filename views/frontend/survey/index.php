@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -23,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -32,13 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'q_number',
             'creator_id',
+            'created_at',
+            'ending_at',
             ['class' => 'yii\grid\ActionColumn','visibleButtons'=>['update'=> function ($model, $key, $index){
                                                                                          return $model->creator_id ==Yii::$app->user->identity->id; 
                                                                                         },
                                                                    'delete' => function ($model, $key, $index){
                                                                                          return $model->creator_id ==Yii::$app->user->identity->id; 
-                                                                                        }]
+                                                                                        },
+                                                                    'view' => function ($model, $key, $index){
+                                                                                         return $model->ending_at >=date('Y-m-d'); 
+                                                                                           }
+                                                                                        ]
                                                                                     ],
         ],
-    ]); ?>
+    ]); ?> 
+    <?php Pjax::end(); ?>
 </div>

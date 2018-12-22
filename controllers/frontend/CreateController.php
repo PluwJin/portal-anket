@@ -17,23 +17,33 @@ class CreateController extends \yii\web\Controller
 {
     
     public $before;
+    public $SurModel;
     
     public function actionIndex()
     {
         return $this->render('index');
     }
 
+
     public function actionStep1()
     {
+
         $model=new Survey();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->save();
+        $model->creator_id=Yii::$app->user->identity->id;
+        $model->created_at=date('Y-m-d');
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) { 
+            //$model->save();
+            $_SESSION['SurveyEnding_at']=$model->ending_at;
+            $_SESSION['SurveyName']=$model->name;
             $_SESSION['SurveyId']=$model->id;
             $_SESSION['Qnumber']=$model->q_number;
             $this->redirect(array('create/step2'));
+            
 
             } 
         else {
+
            return $this->render('step1',['model'=>$model]);
            }
     }
@@ -47,32 +57,37 @@ class CreateController extends \yii\web\Controller
             
             
         } 
-        if (Model::loadMultiple($model,Yii::$app->request->post())&& Model::ValidateMultiple($model) ) {
+        if (Model::loadMultiple($model,Yii::$app->request->post()) && Model::ValidateMultiple($model) ) {
             for($i=0;$i<$_SESSION['Qnumber'];$i++){
                 for($j=0;$j<$_SESSION['Qnumber'];$j++){
                     if($model[$i]->name==$model[$j]->name && $i!=$j){
-                    return $this->render('step2',['models'=>$model]);                  
+                    return $this->render('step2',['models'=>$model]);            
                     }
                 }
             }
 
            $i=0;
-             foreach($model as $mode){
+             foreach($model as $index=>$mode){
+                $_SESSION['q'.$index]['name']=$mode->name;
+                $_SESSION['q'.$index]['type']=$mode->type;
+                $_SESSION['q'.$index]['required']=$mode->required;
+                $_SESSION['q'.$index]['option_number']=$mode->option_number;
 
                  if($mode->type!='textInput'){
                      $optionQuestion[$i]=$mode;
                      $i++;
                  }
                  $_SESSION['optionnumber']= $_SESSION['optionnumber']+$mode->option_number;
-                $mode->save();
+                //$mode->save();
             }
+
             $_SESSION['optionsQuestions']=$optionQuestion;
             $this->redirect(array('create/step3'));
         }
             
         else {
             return $this->render('step2',['models'=>$model]);
-            
+           
            }
        
 
@@ -143,13 +158,18 @@ class CreateController extends \yii\web\Controller
         return $this->render('step5');
     }
 
-    public function actionIndex2()
-    {
-        $Smodel=new Survey();
-        $Qmodel=new Questions();
-        $Omodel=new Options();
 
-        return $this->render('index2',['Smodel'=>$Smodel,'Qmodel'=>$Qmodel,'Omodel'=>$Omodel]);
-    }
+
+   
+   
+
+
+
+
+
 
 }
+
+
+
+

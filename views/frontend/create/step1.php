@@ -3,7 +3,9 @@
 use kouosl\theme\helpers\Html;
 use kouosl\theme\widgets\Portlet;
 use yii\bootstrap\ActiveForm;
-use yii\widgets\Pjax;
+use yii\widgets\ActiveField;
+use yii\base\Widget;
+
 
 $this->title = 'Step1';
 $data['title'] = Html::encode($this->title);
@@ -32,7 +34,12 @@ margin-left:170px;
 margin-top:20px;
 }
 </style>
-
+<?php
+ if(!isset($_SESSION['SurveyName'])){
+    $_SESSION['SurveyName']="";$_SESSION['Qnumber']="";$_SESSION['SurveyEnding_at']="";
+ }
+            
+?>
 
 
 
@@ -41,25 +48,34 @@ margin-top:20px;
 <hr>
         <div class="col-lg-5",id='s2'>
             <?php $form = ActiveForm::begin(); ?>
+
           
            
 
-                <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'name')->textInput(['autofocus' => true,'value'=>$_SESSION['SurveyName'] ]) ?>
                 
 
-                <?= $form->field($model, 'q_number')->textInput(['type' =>'number','min'=>1,'max'=>'10'])  ?>
+                <?= $form->field($model, 'q_number')->textInput(['type' =>'number','min'=>1,'max'=>'10','value'=>$_SESSION['Qnumber']])  ?>
 
-                <?php $model->creator_id=Yii::$app->user->identity->id?>
+               
+                <?= $form->field($model, 'ending_at')->input('date',['value'=>$_SESSION['SurveyEnding_at']]) ?>
+
+                
                
                
                 <div class="form-group">
                    <?= Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
-                    
+                  
                 </div>
 
             <?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>
+
+
+
+
+
 
 
