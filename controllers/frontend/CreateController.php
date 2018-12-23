@@ -17,20 +17,36 @@ class CreateController extends \yii\web\Controller
 {
     
     public $before;
+    public $SurModel;
     
     public function actionIndex()
     {
+        session_unset();
         return $this->render('index');
     }
 
+
     public function actionStep1()
     {
+
         $model=new Survey();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->save();
+        //$model->id=(Survey::find()->select('id')->max('id'))+1;
+        $model->creator_id=Yii::$app->user->identity->id;
+        $model->created_at=date('Y-m-d');
+        
+
+        if ($model->load(Yii::$app->request->post())) {
+            $_SESSION['SurveyEnding_at']=$model->ending_at;
+            $_SESSION['SurveyName']=$model->name;
             $_SESSION['SurveyId']=$model->id;
-            $_SESSION['Qnumber']=$model->q_number;
+            $_SESSION['Qnumber']=$model->q_number; 
+            if($model->validate()){
+            $_SESSION['Smodel']=$model;
             $this->redirect(array('create/step2'));
+            }
+            else {
+                return $this->render('step1',['model'=>$model]);
+                }
 
             } 
         else {
@@ -38,45 +54,57 @@ class CreateController extends \yii\web\Controller
            }
     }
 
+
+
     public function actionStep2()
     {
         
         $_SESSION['optionnumber']=0;
         for($i = 0; $i<$_SESSION['Qnumber']; $i++) {
-            $model[] = new Questions();
-            
-            
+            $model[] = new Questions();   
         } 
-        if (Model::loadMultiple($model,Yii::$app->request->post())&& Model::ValidateMultiple($model) ) {
+        if (Model::loadMultiple($model,Yii::$app->request->post()) && Model::ValidateMultiple($model) ) {
+            foreach($model as $index=>$mode){
+                $_SESSION['q'.$index]['name']=$mode->name;
+                $_SESSION['q'.$index]['type']=$mode->type;
+                $_SESSION['q'.$index]['required']=$mode->required;
+                $_SESSION['q'.$index]['option_number']=$mode->option_number;
+            }
+            
             for($i=0;$i<$_SESSION['Qnumber'];$i++){
                 for($j=0;$j<$_SESSION['Qnumber'];$j++){
                     if($model[$i]->name==$model[$j]->name && $i!=$j){
-                    return $this->render('step2',['models'=>$model]);                  
+                       return $this->render('step2',['models'=>$model]);            
                     }
                 }
             }
 
            $i=0;
-             foreach($model as $mode){
-
+             foreach($model as $index=>$mode){
                  if($mode->type!='textInput'){
                      $optionQuestion[$i]=$mode;
                      $i++;
                  }
                  $_SESSION['optionnumber']= $_SESSION['optionnumber']+$mode->option_number;
-                $mode->save();
+                //$mode->save();
             }
+
+            if($i==0){
+                $_SESSION['Qmodel']=$model;
+                $this->redirect(array('create/step4'));
+            }
+            else{
             $_SESSION['optionsQuestions']=$optionQuestion;
+            $_SESSION['Qmodel']=$model;
             $this->redirect(array('create/step3'));
+            }
+
         }
             
         else {
             return $this->render('step2',['models'=>$model]);
-            
-           }
-       
-
-        
+           
+           }  
     }
 
     public function actionStep3()
@@ -85,71 +113,63 @@ class CreateController extends \yii\web\Controller
             $model[] = new Options();   
         }
         if(Model::loadMultiple($model,Yii::$app->request->post()) && Model::ValidateMultiple($model) ){
-            $exists = Options::find()->where( [ 's_id' => $model[0]->s_id ] )->exists();
-            for($i=0;$i<$_SESSION['optionnumber'];$i++){
-                for($j=0;$j<$_SESSION['optionnumber'];$j++){
-                    if($model[$i]->name==$model[$j]->name && $i!=$j && $model[$i]->q_id==$model[$j]->q_id ){
-                    return $this->render('step3',['models'=>$model]);                  
-                    }
-                }
-            }
-            if($exists){
-                $modelexist=Options::find()->where(['s_id'=>$_SESSION['SurveyId']])->orderBy(['id'=>SORT_ASC])->all();
-                for($i=0;$i<$_SESSION['optionnumber'];$i++){
-               Options::updateAll(['name'=>$model[$i]->name], ['id'=>$modelexist[$i]->id]);
-               echo $modelexist[$i]->id.'<br>';
-                }
-                $this->redirect(array('create/step4'));
-            }
-            else{
+            $_SESSION['Omodel']=$model;
+            $this->redirect(array('create/save'));
                
-                foreach($model as $mode){
-                    $mode->save();
-                }
-                $this->redirect(array('create/step4'));
-                //session_unset();
-            }
-            
-
-
-
         }
         else{
-
-      return $this->render('step3',['models'=>$model]);
+            return $this->render('step3',['models'=>$model]);
         }
 
-     
-    
-
-       
-
-
     }
 
 
 
-
-
-
-    public function actionStep4()
+    public function actionSave()
     {
+        if(isset($_SESSION['SurveyName'])){
+        $j=0;
+        if( $_SESSION['Smodel']->validate()){
+            $_SESSION['Smodel']->save();
+            }
+        
+        $Omodel=$_SESSION['Omodel'];
+        foreach($_SESSION['Qmodel'] as $index => $Qmodel){
+            $Qmodel->s_id=$_SESSION['Smodel']->id;
+            if($Qmodel->validate()){
+            $Qmodel->save();
+            }
+        if($Qmodel->type!="textInput"){
+        for($i=$j;$i<$j+$Qmodel->option_number;$i++){
+            $Omodel[$i]->s_id=$_SESSION['Smodel']->id;
+            $Omodel[$i]->q_id=$Qmodel->id;
+            if($Omodel[$i]->validate()){
+                $Omodel[$i]->save();
+                }
+            
+        }
+        $j=$i;
+    }
+    }
+}
+
+
+        session_unset();
         return $this->render('step4');
     }
-    
 
-    public function actionStep5()
-    {
-        return $this->render('step5');
-    }
 
-    public function actionIndex2()
-    {
-        $Smodel=new Survey();
-        $Qmodel=new Questions();
-        $Omodel=new Options();
 
-        return $this->render('index2',['Smodel'=>$Smodel,'Qmodel'=>$Qmodel,'Omodel'=>$Omodel]);
-    }
+   
+   
+
+
+
+
+
 
 }
+
+
+
+

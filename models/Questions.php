@@ -32,7 +32,7 @@ class Questions extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['s_id', 'name', 'type'], 'required'],
+            [['name', 'type'], 'required'],
             [['s_id', 'required', 'option_number'], 'integer'],
             [['name'], 'string', 'max' => 100],
             [['type'], 'string', 'max' => 50],

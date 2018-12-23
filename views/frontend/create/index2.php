@@ -11,34 +11,9 @@ $this->title = 'Create';
 $data['title'] = Html::encode($this->title);
 $this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/anket'];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
-<?php
-$script=<<< JS
-$(document).ready(function() {
-
- $("#soruEkleButton").click(function(){
-     
-
-
- });
-
-
-
-
-
-});
-
-
-
-
-
-
-
-
-JS;
-$this->registerJs($script);
-?>
 
 
 
@@ -69,26 +44,39 @@ margin-top:20px;
 
 
 
-<?php $form = ActiveForm::begin(); ?>
 
- <fieldset>
-      <div class="row",id="Step1">
-         <h1>Step 1</h1>
-         <hr>
-         <div class="col-lg-5">
-         
-              <?= $form->field($Smodel, 'name')->textInput(['autofocus' => true]) ?> 
+<div class="row" id="s1">
+<h1>Step 1</h1>
+<hr>
+        <div class="col-lg-5" id='s2' >
+        <?php Pjax::begin(['enablePushState' => true]); ?>
+            <?php $form = ActiveForm::begin(['options' => ['data-pjax' => true ]]); ?>
+          
+           
 
-              <?= Html::button("Soru Ekle",['id'=>'soruEkleButton','name'=>'S_ekle_button','class'=>'main_buttons','value'=>'ekle'])  ?>
-                       
-         </div>
-      </div>
-  </fieldset>
+                <?= $form->field($Smodel, 'name')->textInput(['autofocus' => true]) ?>
+                
 
-  
+                <?= $form->field($Smodel, 'q_number')->textInput(['type' =>'number','min'=>1,'max'=>'10'])  ?>
 
+               
+                <?= $form->field($Smodel, 'ending_at')->input('date') ?>
 
+                
+               
+               
+                <div class="form-group">
+              
+                   <?=Html::a("Devam et", ['create/index2?step=2'], ['class' => 'btn btn-lg btn-success']) //Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
+                  
+                   <?= Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
+                </div>
+            <?php ActiveForm::end(); ?>
+            <?php Pjax::end(); ?>
+        </div>
+    </div>
+</div>
 
+<?php
+?>
 
-
-<?php ActiveForm::end(); ?>

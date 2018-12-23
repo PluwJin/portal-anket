@@ -5,6 +5,7 @@ use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Modal;
 use kouosl\anket\models\Survey;
 use kouosl\anket\models\Questions;
+use yii\widgets\Pjax;
 
 $this->title = 'Step2';
 $data['title'] = Html::encode($this->title);
@@ -52,7 +53,6 @@ margin-top:20px;
 }
 
 </style>
-
 <div class="row">
 <h1>Step 2</h1>
 <hr>
@@ -61,19 +61,25 @@ margin-top:20px;
             <?php $form = ActiveForm::begin(['enableClientValidation'=>false]); ?>
             
             
-            <?php foreach($models as $index=>$model){ ?>    
+            <?php foreach($models as $index=>$model){ ?> 
+                <?php
+                 if(!isset($_SESSION['q'.$index]['name'])){
+                    $_SESSION['q'.$index]['name']="";$_SESSION['q'.$index]['type']="";$_SESSION['q'.$index]['required']="";$_SESSION['q'.$index]['option_number']="";
+                }
+                ?>   
+
              <div style="border:2px solid black;margin-top: 10px; padding: 25px;border-radius:10px;">      
-               <?= $form->field($model, "[$index]s_id")->textInput(['autofocus' => true ,'required'=>true, 'value'=>$_SESSION['SurveyId'],'readonly'=>true]) ?>
+               
 
-                <?= $form->field($model, "[$index]name")->textInput(['autofocus' => true ,'required'=>true])->label(($index+1).".Soruyu Giriniz:") ?>
+                <?= $form->field($model, "[$index]name")->textInput(['autofocus' => true ,'required'=>true,'value'=>$_SESSION['q'.$index]['name']])->label(($index+1).".Soruyu Giriniz:") ?>
 
-                <?= $form->field($model, "[$index]type")->dropDownList(['textInput'=>'Text','radio'=>'Radio','checkbox'=>'Checkbox'],['id'=>('d'.$index),'onchange'=>'ac(this)'])?>
+                <?= $form->field($model, "[$index]type")->dropDownList(['textInput'=>'Text','radio'=>'Radio','checkbox'=>'Checkbox'],['id'=>('d'.$index),'onchange'=>'ac(this)','value'=>$_SESSION['q'.$index]['type']])?>
                 
                 
-                <?= $form->field($model, "[$index]required")->dropDownList(['0'=>'Hayır','1'=>'Evet'])->label("Cevaplanması Gerekli mi ?")?>
+                <?= $form->field($model, "[$index]required")->dropDownList(['0'=>'Hayır','1'=>'Evet'],['value'=>$_SESSION['q'.$index]['required']])->label("Cevaplanması Gerekli mi ?")?>
 
 
-                <?= $form->field($model, "[$index]option_number")->textInput(['required' => false ,'id' => ('o'.$index) ,'style' => 'display:none' ,'type'=>'number'])?>
+                <?= $form->field($model, "[$index]option_number")->textInput(['required' => false ,'id' => ('o'.$index) ,'style' => 'display:none' ,'type'=>'number','value'=>$_SESSION['q'.$index]['option_number']])?>
 
                 
              </div>
@@ -82,14 +88,18 @@ margin-top:20px;
 
                 <div class="form-group">
                     <?= Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
+                    <?= \yii\helpers\Html::a( 'Geri', 'step1',['class' => 'btn btn-success' ,'style'=>'color:black;margin-top:20px']);?>
+                    
                 </div>
+              
+
 
             <?php ActiveForm::end(); ?>
         </div>
     </div>
 
 
-</div>
 
+</div>
 
 

@@ -31,7 +31,7 @@ class Options extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['s_id', 'q_id', 'name'], 'required'],
+            [['name'], 'required'],
             [['s_id', 'q_id'], 'integer'],
             [['name'], 'string', 'max' => 100],
             [['s_id', 'q_id', 'name'], 'unique', 'targetAttribute' => ['s_id', 'q_id', 'name']],

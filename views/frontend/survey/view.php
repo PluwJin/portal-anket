@@ -60,25 +60,36 @@ fieldset{
   <?php $form = ActiveForm::begin(['enableClientValidation'=>false,'fieldConfig' => ['enableLabel'=>false]]); ?>
     <h1><?= Html::encode("Anket : ".$this->title) ?></h1>
     <?php $Qmodel=Questions::find()->where(['s_id'=>$model->id])->orderBy(['id'=>SORT_ASC])->all()?>
-    <?php foreach($Qmodel as $index=>$qmodel){ ?>
-     <div class="question">
-        <h3><?= ($index+1).'.) '.$qmodel->name  ?></h3>
 
-        <?php if($qmodel->type=='textInput'){?>
-          <?= $form->field($model, "id")->textInput(['required'=>true]) ?>
+    <?php foreach($Amodel as $index=>$amodel){ ?>
+      
+     <div class="question">
+        <h3><?= ($index+1).'.) '.$Qmodel[$index]->name  ?></h3>
+
+        <?php if($Qmodel[$index]->type=='textInput'){?>
+          <?= $form->field($amodel, "[$index]user_id")->textInput(['value'=>Yii::$app->user->identity->id]) ?>
+          <?= $form->field($amodel, "[$index]s_id")->textInput(['value'=>$Qmodel[$index]->s_id]) ?>
+          <?= $form->field($amodel, "[$index]q_id")->textInput(['value'=>$Qmodel[$index]->id]) ?>
+          <?= $form->field($amodel, "[$index]textanswer")->textInput(['required'=>true]) ?>
         <?php }?>
 
-        <?php  if($qmodel->type=='radio'){?>
-          <?php $Omodel=Options::find()->select('id,name')->where(['s_id'=>$model->id ,'q_id'=>$qmodel->id])->all()?>
+        <?php  if($Qmodel[$index]->type=='radio'){?>
+          <?php $Omodel=Options::find()->select('id,name')->where(['s_id'=>$model->id ,'q_id'=>$Qmodel[$index]->id])->all()?>
           <fieldset>
-            <?= $form->field($model, "id")->radioList(ArrayHelper::map($Omodel,'id','name')) ?>
+          <?= $form->field($amodel, "[$index]user_id")->textInput(['value'=>Yii::$app->user->identity->id]) ?>
+          <?= $form->field($amodel, "[$index]s_id")->textInput(['value'=>$Qmodel[$index]->s_id]) ?>
+          <?= $form->field($amodel, "[$index]q_id")->textInput(['value'=>$Qmodel[$index]->id]) ?>
+            <?= $form->field($amodel, "[$index]o_id")->radioList(ArrayHelper::map($Omodel,'id','name')) ?>
           </fieldset>
         <?php }?>
 
-        <?php  if($qmodel->type=='checkbox'){?>
-          <?php $Omodel=Options::find()->select('id,name')->where(['s_id'=>$model->id ,'q_id'=>$qmodel->id])->all()?>
+        <?php  if($Qmodel[$index]->type=='checkbox'){?>
+          <?php $Omodel=Options::find()->select('id,name')->where(['s_id'=>$model->id ,'q_id'=>$Qmodel[$index]->id])->all()?>
           <fieldset>
-           <?= $form->field($model, "id")->CheckboxList(ArrayHelper::map($Omodel,'id','name')) ?>
+          <?= $form->field($amodel, "[$index]user_id")->textInput(['value'=>Yii::$app->user->identity->id]) ?>
+          <?= $form->field($amodel, "[$index]s_id")->textInput(['value'=>$Qmodel[$index]->s_id]) ?>
+          <?= $form->field($amodel, "[$index]q_id")->textInput(['value'=>$Qmodel[$index]->id]) ?>
+           <?= $form->field($amodel, "[$index]o_id")->CheckboxList(ArrayHelper::map($Omodel,'id','name')) ?>
           </fieldset>
         <?php }?> 
         </div>
@@ -86,6 +97,11 @@ fieldset{
 
 
     <?php }  ?>
+    <div class="form-group">
+              
+                  
+                   <?= Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
+                </div>
 
 
 

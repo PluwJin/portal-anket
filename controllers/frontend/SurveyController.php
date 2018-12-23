@@ -4,11 +4,16 @@ namespace kouosl\anket\controllers\frontend;
 
 use Yii;
 use kouosl\anket\models\Survey;
+use kouosl\anket\models\Questions;
+use kouosl\anket\models\Answers;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\bootstrap\Alert;
+use yii\base\Model;
+
+
 
 
 /**
@@ -38,8 +43,10 @@ class SurveyController extends Controller
      */
     public function actionIndex()
     {
+        session_unset();
         $dataProvider = new ActiveDataProvider([
             'query' => Survey::find(),
+            'pagination'=>['pageSize'=>20],
         ]);
 
         return $this->render('index', [
@@ -55,9 +62,68 @@ class SurveyController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        //unique indekste hata var oy veren birdaha oy verebiliyor.
+        $model=$this->findModel($id);
+        //$cnumbermodel=Questions::find()->where(['s_id'=>$id,'type'=>'checkbox'])->sum('option_number')-Questions::find()->where(['s_id'=>$id,'type'=>'checkbox'])->count()+$model->q_number;
+        $numbermodel=$model->q_number;
+
+        if($model->ending_at>=date('Y-m-d')){ //Eğer Anket hala açıksa 
+            for($i=0;$i<$numbermodel;$i++){
+                $Amodel[]=new Answers();
+            }
+            
+            if(Model::loadMultiple($Amodel,Yii::$app->request->post())){   //Anket cevaplandıysa
+                
+                foreach($Amodel as $index =>$amodel){                     // cevaplar model dizisi olarak geldi
+                    if(is_array($amodel->o_id)){                          // Her bir model checkbox dizisi içeriyormu diye bakıldı
+                     foreach($amodel->o_id as $i){                            // model checkboxtan geldiyse checkbox cevapları modellere ayrıldı ve session dizisinde tutuldu
+                     $cmodel=new Answers();                                  
+                     $cmodel->user_id=$amodel->user_id;
+                     $cmodel->s_id=$amodel->s_id;
+                     $cmodel->q_id=$amodel->q_id;
+                     $cmodel->o_id=$i;
+
+                     if($cmodel->validate()){
+                         $_SESSION['cmodels'][]=$cmodel;
+                     }
+                     else{
+                        return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
+                     }
+                     }
+                    } 
+                    else if($amodel->validate()){                                // eğer model checkboxtan cevabı içermiyorsa radio veya text ise doğrudan session a atılır
+                        $_SESSION['amodels'][]=$amodel;
+                        
+                    }
+                    else{
+                        return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
+                    }
+                    
+                }
+                if(isset($_SESSION['cmodels'])){
+
+                foreach($_SESSION['cmodels'] as $model){
+                    $model->save();
+                }
+            }
+            if(isset($_SESSION['amodels'])){
+
+                foreach($_SESSION['amodels'] as $model){
+                    $model->save();
+                }
+            }
+            return $this->redirect(['index']);
+
+                }
+                else{
+                    return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
+                   }
+        }
+
+
+        else{
+            return $this->redirect(['index']);
+        }
     }
 
     /**
@@ -111,6 +177,14 @@ class SurveyController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findnumber($id)
+    {
+
+        
+        
+
     }
 
  

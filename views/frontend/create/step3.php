@@ -69,13 +69,7 @@ margin-top:20px;
             
              
             <div style="border:1px solid red;margin-top: 25px; padding: 25px;border-radius:10px">
-               <div class='col-md-6'>
-                  <?= $form->field($model, "[$index]s_id")->textInput(['required'=>true,'value'=>$_SESSION['SurveyId'],'readonly'=>true,'style'=>['width'=>'60px','display'=>'inline']]) ?>
-               </div>
-               <?= $form->field($model, "[$index]q_id")->textInput(['required'=>true,'value'=>$soru[$i]->id,'readonly'=>true,'style'=>['width'=>'60px','display'=>'inline']])?>
-
                
-
                <?= $form->field($model, "[$index]name")->textInput(['autofocus' => true ,'required'=>true])->label(($a+1).". Seçeneği Giriniz :")  ?>
                </div>
                
@@ -98,7 +92,8 @@ margin-top:20px;
              
 
                 <div class="form-group">
-                    <?= Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
+                    <?= Html::submitButton('Kaydet', ['class' => 'btn btn-primary']) ?>
+                    <?= \yii\helpers\Html::a( 'Geri', 'step2',['class' => 'btn btn-success' ,'style'=>'color:black;margin-top:20px']);?>
                 </div>
             </div>
 
