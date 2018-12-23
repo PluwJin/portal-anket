@@ -69,7 +69,11 @@ margin-top:20px;
                 ?>   
 
              <div style="border:2px solid black;margin-top: 10px; padding: 25px;border-radius:10px;">      
+<<<<<<< HEAD
                
+=======
+               <?= $form->field($model, "[$index]s_id")->textInput(['autofocus' => true ,'required'=>true, 'value'=>131,'readonly'=>true]) ?>
+>>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
 
                 <?= $form->field($model, "[$index]name")->textInput(['autofocus' => true ,'required'=>true,'value'=>$_SESSION['q'.$index]['name']])->label(($index+1).".Soruyu Giriniz:") ?>
 
@@ -88,10 +92,15 @@ margin-top:20px;
 
                 <div class="form-group">
                     <?= Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
+<<<<<<< HEAD
                     <?= \yii\helpers\Html::a( 'Geri', 'step1',['class' => 'btn btn-success' ,'style'=>'color:black;margin-top:20px']);?>
                     
+=======
+                    <?= \yii\helpers\Html::a( 'Back', 'step1');?>
+>>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
                 </div>
               
+
 
 
             <?php ActiveForm::end(); ?>

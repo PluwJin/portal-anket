@@ -62,6 +62,7 @@ class SurveyController extends Controller
      */
     public function actionView($id)
     {
+<<<<<<< HEAD
         //unique indekste hata var oy veren birdaha oy verebiliyor.
         $model=$this->findModel($id);
         //$cnumbermodel=Questions::find()->where(['s_id'=>$id,'type'=>'checkbox'])->sum('option_number')-Questions::find()->where(['s_id'=>$id,'type'=>'checkbox'])->count()+$model->q_number;
@@ -121,6 +122,12 @@ class SurveyController extends Controller
         }
 
 
+=======
+        $model=$this->findModel($id);
+        if($model->ending_at>=date('Y-m-d')){
+        return $this->render('view',['model'=>$model]);
+        }
+>>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
         else{
             return $this->redirect(['index']);
         }
