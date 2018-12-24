@@ -76,7 +76,7 @@ margin-top:20px;
                 <?= $form->field($model, "[$index]type")->dropDownList(['textInput'=>'Text','radio'=>'Radio','checkbox'=>'Checkbox'],['id'=>('d'.$index),'onchange'=>'ac(this)','value'=>$_SESSION['q'.$index]['type']])?>
                 
                 
-                <?= $form->field($model, "[$index]required")->dropDownList(['0'=>'Hayır','1'=>'Evet'],['value'=>$_SESSION['q'.$index]['required']])->label("Cevaplanması Gerekli mi ?")?>
+                <?= $form->field($model, "[$index]required")->dropDownList(['false'=>'Hayır','true'=>'Evet'],['value'=>$_SESSION['q'.$index]['required']])->label("Cevaplanması Gerekli mi ?")?>
 
 
                 <?= $form->field($model, "[$index]option_number")->textInput(['required' => false ,'id' => ('o'.$index) ,'style' => 'display:none' ,'type'=>'number','value'=>$_SESSION['q'.$index]['option_number']])?>

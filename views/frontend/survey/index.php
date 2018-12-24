@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at',
             'ending_at',
             ['class' => 'yii\grid\ActionColumn','visibleButtons'=>['update'=> function ($model, $key, $index){
-                                                                                         return $model->creator_id ==Yii::$app->user->identity->id; 
+                                                                                         return $model->creator_id ==Yii::$app->user->identity->id && ($model->ending_at>date('Y-m-d')); 
                                                                                         },
                                                                    'delete' => function ($model, $key, $index){
                                                                                          return $model->creator_id ==Yii::$app->user->identity->id; 

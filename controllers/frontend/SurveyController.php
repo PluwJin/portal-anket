@@ -62,67 +62,75 @@ class SurveyController extends Controller
      */
     public function actionView($id)
     {
-        //unique indekste hata var oy veren birdaha oy verebiliyor.
         $model=$this->findModel($id);
-        //$cnumbermodel=Questions::find()->where(['s_id'=>$id,'type'=>'checkbox'])->sum('option_number')-Questions::find()->where(['s_id'=>$id,'type'=>'checkbox'])->count()+$model->q_number;
         $numbermodel=$model->q_number;
-
-        if($model->ending_at>=date('Y-m-d')){ //Eğer Anket hala açıksa 
-            for($i=0;$i<$numbermodel;$i++){
+        if($model->ending_at>=date('Y-m-d') && !(Answers::find()->where(['User_id'=>Yii::$app->User->identity->id, 's_id'=>$model->id] )->exists()))
+        {                                                                //Eğer Anket hala açıksa 
+            for($i=0;$i<$numbermodel;$i++)
+            {
                 $Amodel[]=new Answers();
             }
-            
             if(Model::loadMultiple($Amodel,Yii::$app->request->post())){   //Anket cevaplandıysa
-                
-                foreach($Amodel as $index =>$amodel){                     // cevaplar model dizisi olarak geldi
-                    if(is_array($amodel->o_id)){                          // Her bir model checkbox dizisi içeriyormu diye bakıldı
-                     foreach($amodel->o_id as $i){                            // model checkboxtan geldiyse checkbox cevapları modellere ayrıldı ve session dizisinde tutuldu
-                     $cmodel=new Answers();                                  
-                     $cmodel->user_id=$amodel->user_id;
-                     $cmodel->s_id=$amodel->s_id;
-                     $cmodel->q_id=$amodel->q_id;
-                     $cmodel->o_id=$i;
-
-                     if($cmodel->validate()){
-                         $_SESSION['cmodels'][]=$cmodel;
-                     }
-                     else{
-                        return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
-                     }
-                     }
+                foreach($Amodel as $index =>$amodel)
+                {                                                            // cevaplar model dizisi olarak geldi
+                    if(is_array($amodel->o_id))
+                    {                                                        // Her bir model checkbox dizisi içeriyormu diye bakıldı
+                        foreach($amodel->o_id as $i){                        // model checkboxtan geldiyse checkbox cevapları modellere ayrıldı ve session dizisinde tutuldu
+                           $cmodel=new Answers();                                  
+                           $cmodel->user_id=$amodel->user_id;
+                           $cmodel->s_id=$amodel->s_id;
+                           $cmodel->q_id=$amodel->q_id;
+                           $cmodel->o_id=$i;
+                          if($cmodel->validate())
+                          {
+                             $_SESSION['cmodels'][]=$cmodel;
+                          }
+                           else
+                           {
+                              session_unset();
+                              return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
+                           }
+                        }
                     } 
-                    else if($amodel->validate()){                                // eğer model checkboxtan cevabı içermiyorsa radio veya text ise doğrudan session a atılır
-                        $_SESSION['amodels'][]=$amodel;
-                        
+                    else if($amodel->validate())
+                    {                                                // eğer model checkboxtan cevabı içermiyorsa radio veya text ise doğrudan session a atılır
+                        $_SESSION['amodels'][]=$amodel;  
                     }
-                    else{
+                    else
+                    {
+                        session_unset();
                         return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
                     }
                     
                 }
-                if(isset($_SESSION['cmodels'])){
-
-                foreach($_SESSION['cmodels'] as $model){
-                    $model->save();
+                if(isset($_SESSION['cmodels']))
+                {
+                    foreach($_SESSION['cmodels'] as $model)
+                    {
+                      $model->save();
+                    }
                 }
-            }
-            if(isset($_SESSION['amodels'])){
-
-                foreach($_SESSION['amodels'] as $model){
-                    $model->save();
+               if(isset($_SESSION['amodels']))
+               {
+                   foreach($_SESSION['amodels'] as $model)
+                   {
+                      $model->save();
+                    }
                 }
-            }
-            return $this->redirect(['index']);
+                session_unset();
+                return $this->redirect(['index']);
 
                 }
                 else{
+                    session_unset();
                     return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
                    }
         }
-
-
-        else{
-            return $this->redirect(['index']);
+        else{                                              //Anket Kapalıdır.
+            session_unset();
+            Yii::$app->session->setFlash('error', '<h1>Anket Kapalıdır</h1>');
+            echo Yii::$app->session->getFlash('error');
+            //return $this->redirect(['index']);
         }
     }
 

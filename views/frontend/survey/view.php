@@ -70,8 +70,12 @@ fieldset{
           <?= $form->field($amodel, "[$index]user_id")->textInput(['value'=>Yii::$app->user->identity->id]) ?>
           <?= $form->field($amodel, "[$index]s_id")->textInput(['value'=>$Qmodel[$index]->s_id]) ?>
           <?= $form->field($amodel, "[$index]q_id")->textInput(['value'=>$Qmodel[$index]->id]) ?>
-          <?= $form->field($amodel, "[$index]textanswer")->textInput(['required'=>true]) ?>
+          <?= $form->field($amodel, "[$index]textanswer")->textInput() ?>
+          
         <?php }?>
+
+        
+
 
         <?php  if($Qmodel[$index]->type=='radio'){?>
           <?php $Omodel=Options::find()->select('id,name')->where(['s_id'=>$model->id ,'q_id'=>$Qmodel[$index]->id])->all()?>

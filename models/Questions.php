@@ -11,7 +11,7 @@ use Yii;
  * @property int $s_id
  * @property string $name
  * @property string $type
- * @property int $required
+ * @property string $required
  * @property int $option_number
  *
  * @property Survey $s
@@ -33,8 +33,9 @@ class Questions extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'type'], 'required'],
-            [['s_id', 'required', 'option_number'], 'integer'],
+            [['s_id', 'option_number'], 'integer'],
             [['name'], 'string', 'max' => 100],
+            [['required'], 'string', 'max' => 10],
             [['type'], 'string', 'max' => 50],
             [['s_id', 'name'], 'unique', 'targetAttribute' => ['s_id', 'name']],
             [['s_id'], 'exist', 'skipOnError' => true, 'targetClass' => Survey::className(), 'targetAttribute' => ['s_id' => 'id']],
