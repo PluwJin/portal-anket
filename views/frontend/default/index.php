@@ -1,12 +1,15 @@
-<?= $this->title = 'Modül çalışıyor.'; ?>
+<?= $this->title = 'Anket'; ?>
 <div class="site-index">
 
     <div class="jumbotron">
-        <h1>Kou Osl Yii2 App</h1>
+        <h1>Anket Modülü</h1>
 
-        <p class="lead">Örnek uygulamayı başarılı bir şekilde çalıştırdınız.</p>
+        <p class="lead">Devam Etmek için Tıklayınız:</p>
 
-        <p><a class="btn btn-lg btn-success" href="#">Modüller ve konfürgasyon!</a></p>
+        <p><a class="btn btn-lg btn-success" href="anket/survey">Anketler</a></p>
+        <p><a class="btn btn-lg btn-success" href="anket/create">Anket Oluştur</a></p>
     </div>
+    
+
 
 </div>
