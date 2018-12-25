@@ -43,7 +43,7 @@ class SurveyController extends Controller
      */
     public function actionIndex()
     {
-        session_unset();
+        //session_unset();
         $dataProvider = new ActiveDataProvider([
             'query' => Survey::find(),
             'pagination'=>['pageSize'=>20],
@@ -118,7 +118,7 @@ class SurveyController extends Controller
                     }
                 }
                 session_unset();
-                return $this->redirect(['index']);
+                return $this->redirect(['survey']);
 
                 }
                 else{
@@ -128,9 +128,8 @@ class SurveyController extends Controller
         }
         else{                                              //Anket Kapalıdır.
             session_unset();
-            Yii::$app->session->setFlash('error', '<h1>Anket Kapalıdır</h1>');
-            echo Yii::$app->session->getFlash('error');
-            //return $this->redirect(['index']);
+            Yii::$app->session->setFlash('error', '<h1>Anket Kapalıdır veya Zaten Cevapladınız !!!</h1>');
+            return $this->redirect(['/anket/survey']);
         }
     }
 
@@ -186,14 +185,19 @@ class SurveyController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-    protected function findnumber($id)
+    public function actionSonuclar($id)
     {
-
-        
-        
-
+            $model=$this->findModel($id);
+            if(Answers::find()->where(['s_id'=>$id])->exists()){
+               return $this->render('sonuclar', ['model' => $model]);  
+            }
+            else{
+            session_unset();
+            Yii::$app->session->setFlash('error', '<h1>Anket Henüz Cevaplanmamıştır !!</h1>');
+            return $this->redirect(['/anket/survey']);
+            }
     }
+
 
  
 }
