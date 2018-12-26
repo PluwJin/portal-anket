@@ -7,6 +7,7 @@ use kouosl\anket\models\Questions;
 use kouosl\anket\models\Options;
 use kouosl\anket\models\Answers;
 use yii\bootstrap\Progress;
+use yii\data\ActiveDataProvider;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -54,31 +55,48 @@ $Qmodel=Questions::find()->where(['s_id'=>$model->id])->all();
 
 </style>
 
-
-
-    <div class="row">
+<div class="row">
     <h1><?= "Anket Adı: ".$model->name  ?></h1>
-       <?php foreach($Qmodel as $qmodel){
-           $Omodel=Options::find()->where(['q_id'=>$qmodel->id])->all();
-           $oysayisi=Answers::find()->where(['q_id'=>$qmodel->id])->count();
-           if($qmodel->type!='textInput'){
-        ?>
+    <?php foreach($Qmodel as $qmodel){
+        $Omodel=Options::find()->where(['q_id'=>$qmodel->id])->all();
+        $oysayisi=Answers::find()->where(['q_id'=>$qmodel->id])->count();
+
+        if($qmodel->type!='textInput'){ ?>
        <div class="soru" >
-       <h2><?=$qmodel->name?></h2>
-       <?php foreach($Omodel as $omodel){
-           $Oacount=Answers::find()->where(['o_id'=>$omodel->id])->count();
-        ?>
-        <?= Progress::widget([
-            'label' => $omodel->name." (Verilen Oy:".($Oacount).")",
-            'percent' => (($Oacount)/$oysayisi)*100,
-            'options' => ['style'=>['width'=>'500px']]
-            ]); ?>
-   
-   
-       <?php } ?>
-       <h5><?= "Kullanılan Toplam Oy: ".$oysayisi  ?></h5>
+            <h2><?=$qmodel->name?></h2>
+            <?php foreach($Omodel as $omodel){
+                $Oacount=Answers::find()->where(['o_id'=>$omodel->id])->count();?>
+                <?php if($oysayisi!=0){ $yuzde=(($Oacount)/$oysayisi)*100; }else {$yuzde=0;} ?>
+                
+                <?= Progress::widget([
+                    'label' => $omodel->name." (Verilen Oy:".($Oacount).")",
+                    'percent' => $yuzde,
+                    'options' => ['style'=>['width'=>'500px']]]);
+                ?>
+            <?php } ?>
+            <h5><?= "Kullanılan Toplam Oy: ".$oysayisi  ?></h5>
        </div>
        <?php } ?>
+
+       <?php if($qmodel->type=='textInput'){?>
+        <div class="soru" >
+        <h2><?=$qmodel->name?></h2>
+
+       <?php $dataProvider = new ActiveDataProvider([
+                    'query' => Answers::find()->select('textanswer')->where(['s_id'=>$model->id,'q_id'=>$qmodel->id]),
+                    'pagination'=>['pageSize'=>10],
+                ]); 
+        echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => [
+        ['attribute'=>'textanswer','label'=>'Text Cevaplar']
+    ],
+]) ?>
+</div>
+
+
+
+        <?php } ?>
        <?php } ?>
  
 <div class='form-group'>

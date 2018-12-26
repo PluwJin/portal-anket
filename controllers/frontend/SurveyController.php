@@ -107,18 +107,20 @@ class SurveyController extends Controller
                 {
                     foreach($_SESSION['cmodels'] as $model)
                     {
-                      $model->save();
+                       if($model->o_id!=null || $model->textanswer!=null)
+                           $model->save();
                     }
                 }
                if(isset($_SESSION['amodels']))
                {
                    foreach($_SESSION['amodels'] as $model)
                    {
-                      $model->save();
+                       if($model->o_id!=null || $model->textanswer!=null)
+                          $model->save();
                     }
                 }
                 session_unset();
-                return $this->redirect(['survey']);
+                return $this->redirect(['/anket/survey']);
 
                 }
                 else{
@@ -189,6 +191,7 @@ class SurveyController extends Controller
     {
             $model=$this->findModel($id);
             if(Answers::find()->where(['s_id'=>$id])->exists()){
+                
                return $this->render('sonuclar', ['model' => $model]);  
             }
             else{

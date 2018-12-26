@@ -155,7 +155,9 @@ class CreateController extends \yii\web\Controller
 
 
         session_unset();
-        return $this->render('step4');
+        Yii::$app->session->setFlash('Ok', '<h1>Anket Başarıyla Oluşturuldu !!!</h1>');
+        return $this->redirect(['/anket/survey']);
+        //return $this->render('step4');
     }
 
 

@@ -11,6 +11,7 @@ $this->title = 'Surveys';
 $this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/anket'];
 $this->params['breadcrumbs'][] = $this->title;
  Yii::$app->session->getFlash('error');
+ Yii::$app->session->getFlash('Ok');
 ?>
 
 <style>
@@ -18,6 +19,16 @@ $this->params['breadcrumbs'][] = $this->title;
 .col-lg-5{
     width:500px;
 }
+.row{
+    background-color:#f5f5f5;
+    border-radius:25px;
+    padding:50px;
+}
+h1{
+    justify:center;
+    text-align:center;
+}
+
 
 </style>
 
@@ -60,4 +71,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
     ]]); ?> 
     <?php Pjax::end(); ?>
+    
 </div>
