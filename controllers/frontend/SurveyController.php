@@ -187,6 +187,8 @@ class SurveyController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    
     public function actionSonuclar($id)
     {
             $model=$this->findModel($id);
