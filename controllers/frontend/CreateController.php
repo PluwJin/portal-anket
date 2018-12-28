@@ -30,20 +30,12 @@ class CreateController extends \yii\web\Controller
     {
 
         $model=new Survey();
-<<<<<<< HEAD
         //$model->id=(Survey::find()->select('id')->max('id'))+1;
         $model->creator_id=Yii::$app->user->identity->id;
         $model->created_at=date('Y-m-d');
         
 
         if ($model->load(Yii::$app->request->post())) {
-=======
-        $model->creator_id=Yii::$app->user->identity->id;
-        $model->created_at=date('Y-m-d');
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) { 
-            //$model->save();
->>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
             $_SESSION['SurveyEnding_at']=$model->ending_at;
             $_SESSION['SurveyName']=$model->name;
             $_SESSION['SurveyId']=$model->id;
@@ -51,18 +43,12 @@ class CreateController extends \yii\web\Controller
             if($model->validate()){
             $_SESSION['Smodel']=$model;
             $this->redirect(array('create/step2'));
-<<<<<<< HEAD
             }
             else {
                 return $this->render('step1',['model'=>$model]);
                 }
-=======
-            
->>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
-
             } 
         else {
-
            return $this->render('step1',['model'=>$model]);
            }
     }
@@ -77,7 +63,6 @@ class CreateController extends \yii\web\Controller
             $model[] = new Questions();   
         } 
         if (Model::loadMultiple($model,Yii::$app->request->post()) && Model::ValidateMultiple($model) ) {
-<<<<<<< HEAD
             foreach($model as $index=>$mode){
                 $_SESSION['q'.$index]['name']=$mode->name;
                 $_SESSION['q'.$index]['type']=$mode->type;
@@ -89,44 +74,24 @@ class CreateController extends \yii\web\Controller
                 for($j=0;$j<$_SESSION['Qnumber'];$j++){
                     if($model[$i]->name==$model[$j]->name && $i!=$j){
                        return $this->render('step2',['models'=>$model]);            
-=======
-            for($i=0;$i<$_SESSION['Qnumber'];$i++){
-                for($j=0;$j<$_SESSION['Qnumber'];$j++){
-                    if($model[$i]->name==$model[$j]->name && $i!=$j){
-                    return $this->render('step2',['models'=>$model]);            
->>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
                     }
                 }
             }
 
            $i=0;
              foreach($model as $index=>$mode){
-<<<<<<< HEAD
-=======
-                $_SESSION['q'.$index]['name']=$mode->name;
-                $_SESSION['q'.$index]['type']=$mode->type;
-                $_SESSION['q'.$index]['required']=$mode->required;
-                $_SESSION['q'.$index]['option_number']=$mode->option_number;
-
->>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
                  if($mode->type!='textInput'){
                      $optionQuestion[$i]=$mode;
                      $i++;
                  }
                  $_SESSION['optionnumber']= $_SESSION['optionnumber']+$mode->option_number;
                 //$mode->save();
-<<<<<<< HEAD
             }
-
             if($i==0){
                 $_SESSION['Qmodel']=$model;
                 $this->redirect(array('create/step4'));
             }
             else{
-=======
-            }
-
->>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
             $_SESSION['optionsQuestions']=$optionQuestion;
             $_SESSION['Qmodel']=$model;
             $this->redirect(array('create/step3'));
@@ -137,15 +102,8 @@ class CreateController extends \yii\web\Controller
         else {
             return $this->render('step2',['models'=>$model]);
            
-<<<<<<< HEAD
            }  
-=======
-           }
-       
-
-        
->>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
-    }
+           }  
 
     public function actionStep3()
     {
@@ -195,30 +153,16 @@ class CreateController extends \yii\web\Controller
 
 
         session_unset();
-        return $this->render('step4');
+
+        Yii::$app->session->setFlash('Ok', '<h1>Anket Başarıyla Oluşturuldu !!!</h1>');
+        return $this->redirect(['/anket/survey']);
+        //return $this->render('step4');
     }
 
 
 
    
    
-
-
-
-
-
-<<<<<<< HEAD
-=======
-
-   
-   
-
-
-
-
-
->>>>>>> 319d19a795c370e5280d3149f01e399a5b50c858
-
 }
 
 

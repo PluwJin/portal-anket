@@ -49,6 +49,18 @@ class Answers extends \yii\db\ActiveRecord
             [['q_id'], 'exist', 'skipOnError' => false, 'targetClass' => Questions::className(), 'targetAttribute' => ['q_id' => 'id']],
             [['s_id'], 'exist', 'skipOnError' => false, 'targetClass' => Survey::className(), 'targetAttribute' => ['s_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => false, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            ['textanswer', 'required', 'when' => function($model) {
+                $qs=Questions::findOne([
+                    'id' => $model->q_id
+                ]);
+                return $qs->required == 'true' && $qs->type == 'textInput';
+            }],
+            ['o_id', 'required', 'when' => function($model) {
+                $qs=Questions::findOne([
+                    'id' => $model->q_id
+                ]);
+                return $qs->required == 'true' && $qs->type != 'textInput';
+            }]
         ];
     }
 
