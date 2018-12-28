@@ -98,8 +98,8 @@ class SurveyController extends Controller
                     }
                     else
                     {
-                        session_unset();
-                        return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
+                       session_unset();
+                       return $this->render('view',['model'=>$model,'Amodel'=>$Amodel]);
                     }
                     
                 }
@@ -203,6 +203,4 @@ class SurveyController extends Controller
             }
     }
 
-
- 
 }

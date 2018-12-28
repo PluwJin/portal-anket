@@ -29,7 +29,6 @@ h1{
     text-align:center;
 }
 
-
 </style>
 <!-- Grid View yapısı, Action ve sonuç butonları -->
 

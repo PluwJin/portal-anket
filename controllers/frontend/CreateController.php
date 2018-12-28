@@ -47,7 +47,6 @@ class CreateController extends \yii\web\Controller
             else {
                 return $this->render('step1',['model'=>$model]);
                 }
-
             } 
         else {
            return $this->render('step1',['model'=>$model]);
@@ -88,7 +87,6 @@ class CreateController extends \yii\web\Controller
                  $_SESSION['optionnumber']= $_SESSION['optionnumber']+$mode->option_number;
                 //$mode->save();
             }
-
             if($i==0){
                 $_SESSION['Qmodel']=$model;
                 $this->redirect(array('create/step4'));
@@ -105,7 +103,7 @@ class CreateController extends \yii\web\Controller
             return $this->render('step2',['models'=>$model]);
            
            }  
-    }
+           }  
 
     public function actionStep3()
     {
@@ -155,6 +153,7 @@ class CreateController extends \yii\web\Controller
 
 
         session_unset();
+
         Yii::$app->session->setFlash('Ok', '<h1>Anket Başarıyla Oluşturuldu !!!</h1>');
         return $this->redirect(['/anket/survey']);
         //return $this->render('step4');
@@ -164,12 +163,6 @@ class CreateController extends \yii\web\Controller
 
    
    
-
-
-
-
-
-
 }
 
 
