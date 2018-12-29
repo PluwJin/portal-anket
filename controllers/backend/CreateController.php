@@ -1,6 +1,6 @@
 <?php
 
-namespace kouosl\anket\controllers\frontend;
+namespace kouosl\anket\controllers\backend;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -91,7 +91,7 @@ class CreateController extends \yii\web\Controller
 
             if($i==0){
                 $_SESSION['Qmodel']=$model;
-                $this->redirect(array('create/step4'));
+                $this->redirect(array('/admin/anket/create/step4'));
             }
             else{
             $_SESSION['optionsQuestions']=$optionQuestion;
@@ -179,7 +179,7 @@ $_SESSION['Smodel']->save();
 
         session_unset();
         Yii::$app->session->setFlash('Ok', '<h1>Anket Başarıyla Oluşturuldu !!!</h1>');
-        return $this->redirect(['/anket/survey']);
+        return $this->redirect(['anket/survey']);
         //return $this->render('step4');
     }
 

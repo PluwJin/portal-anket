@@ -77,7 +77,7 @@ h4{
 
                 if ($action === 'delete') {
     
-                    $url ='/anket/survey/deleteq?id='.$model->id;
+                    $url ='deleteq?id='.$model->id;
     
                     return $url;
     
@@ -93,7 +93,7 @@ h4{
  
     
     ]); ?> 
-     <?= Html::a('Soru Ekle','/anket/create/step2',['class'=>'btn btn-lg btn-success', 'id'=>"ekle"]) ?>
+     <?= Html::a('Soru Ekle','/admin/anket/create/step2',['class'=>'btn btn-lg btn-success', 'id'=>"ekle"]) ?>
     </div>
         
 

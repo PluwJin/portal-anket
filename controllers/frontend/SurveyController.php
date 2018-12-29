@@ -171,6 +171,21 @@ class SurveyController extends Controller
 
             return $this->redirect(['index']);  
     }
+    // Soru silmek için kullanılan action Soru modeli için FindQModel metodu kullanılır
+
+    public function actionDeleteq($id)
+    {
+        
+        $s_id= $this->findQModel($id)->s_id;
+        $survey=$this->findModel($s_id);
+
+        $this->findQModel($id)->delete();
+         $survey->q_number=$survey->q_number-1;
+         $survey->save();
+
+            return $this->redirect(['/anket/survey/update?id='.$s_id]);
+            
+    }
 
     /**
      * Finds the Survey model based on its primary key value.
@@ -182,6 +197,15 @@ class SurveyController extends Controller
     protected function findModel($id)
     {
         if (($model = Survey::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    protected function findQModel($id)
+    {
+        if (($model = Questions::findOne($id)) !== null) {
             return $model;
         }
 
