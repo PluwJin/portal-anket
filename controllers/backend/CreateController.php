@@ -86,12 +86,11 @@ class CreateController extends \yii\web\Controller
                      $i++;
                  }
                  $_SESSION['optionnumber']= $_SESSION['optionnumber']+$mode->option_number;
-                //$mode->save();
             }
 
             if($i==0){
                 $_SESSION['Qmodel']=$model;
-                $this->redirect(array('/admin/anket/create/step4'));
+                $this->redirect(array('create/save'));
             }
             else{
             $_SESSION['optionsQuestions']=$optionQuestion;
@@ -154,13 +153,14 @@ class CreateController extends \yii\web\Controller
 }
 else if(isset($_SESSION['SoruEkleme'])==true){
     $j=0;
-    $Omodel=$_SESSION['Omodel'];
+    
     foreach($_SESSION['Qmodel'] as $index => $Qmodel){
         $Qmodel->s_id=$_SESSION['Smodel']->id;
         if($Qmodel->validate()){
         $Qmodel->save();
         }
     if($Qmodel->type!="textInput"){
+        $Omodel=$_SESSION['Omodel'];
     for($i=$j;$i<$j+$Qmodel->option_number;$i++){
         $Omodel[$i]->s_id=$_SESSION['Smodel']->id;
         $Omodel[$i]->q_id=$Qmodel->id;
@@ -179,7 +179,7 @@ $_SESSION['Smodel']->save();
 
         session_unset();
         Yii::$app->session->setFlash('Ok', '<h1>Anket Başarıyla Oluşturuldu !!!</h1>');
-        return $this->redirect(['anket/survey']);
+        return $this->redirect(['/anket/survey']);
         //return $this->render('step4');
     }
 

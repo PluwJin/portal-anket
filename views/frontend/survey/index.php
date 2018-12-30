@@ -48,15 +48,9 @@ h1{
             'creator_id',
             'created_at',
             'ending_at',
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update} {delete} {sonuclar}',
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {sonuclar}',
            
-            'visibleButtons'=>['update'=> function ($model, $key, $index){
-                                             return $model->creator_id ==Yii::$app->user->identity->id && ($model->ending_at>date('Y-m-d')); 
-                                            },
-                                'delete' => function ($model, $key, $index){
-                                              return $model->creator_id ==Yii::$app->user->identity->id; 
-                                            },
-                                'view' => function ($model, $key, $index){
+            'visibleButtons'=>[ 'view' => function ($model, $key, $index){
                                             return $model->ending_at >=date('Y-m-d'); 
                                             }
                                 ]

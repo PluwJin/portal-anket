@@ -17,7 +17,8 @@
     <div class="jumbotron">
         <h1>Anket Modülü</h1>
         <p><a class="btn btn-lg btn-success" href="/admin/anket/create">Anket Oluştur</a></p>
-        <p><a class="btn btn-lg btn-success" href="/admin/anket/survey">Anketler</a></p>
+        <p><a class="btn btn-lg btn-success" href="/admin/anket/survey">Anket Güncelle</a></p>
+        <p><a class="btn btn-lg btn-success" href="/anket">Cevapla veya Sonuçları Gör</a></p>
     </div>
     
 
