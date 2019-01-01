@@ -132,13 +132,14 @@ class CreateController extends \yii\web\Controller
             $_SESSION['Smodel']->save();
             }
         
-        $Omodel=$_SESSION['Omodel'];
+        
         foreach($_SESSION['Qmodel'] as $index => $Qmodel){
             $Qmodel->s_id=$_SESSION['Smodel']->id;
             if($Qmodel->validate()){
             $Qmodel->save();
             }
         if($Qmodel->type!="textInput"){
+            $Omodel=$_SESSION['Omodel'];
         for($i=$j;$i<$j+$Qmodel->option_number;$i++){
             $Omodel[$i]->s_id=$_SESSION['Smodel']->id;
             $Omodel[$i]->q_id=$Qmodel->id;
@@ -151,6 +152,7 @@ class CreateController extends \yii\web\Controller
     }
     }
 }
+// soru eklemede hata veriyor aynı isimli soru eklersen
 else if(isset($_SESSION['SoruEkleme'])==true){
     $j=0;
     
