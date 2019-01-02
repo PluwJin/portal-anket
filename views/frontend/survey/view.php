@@ -103,8 +103,10 @@ fieldset{
     <?php }  ?>
     <div class="form-group">
               
-                  
+    
                    <?= Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
+                   <?=Html::a('Geri','/anket/survey', $options = ['class'=>'btn btn-success'])  ?>
+                  
                 </div>
 
 

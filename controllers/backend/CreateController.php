@@ -74,7 +74,9 @@ class CreateController extends \yii\web\Controller
             for($i=0;$i<$_SESSION['Qnumber'];$i++){
                 for($j=0;$j<$_SESSION['Qnumber'];$j++){
                     if($model[$i]->name==$model[$j]->name && $i!=$j){
-                       return $this->render('step2',['models'=>$model]);            
+                     Yii::$app->session->setFlash('error', '<h1>Aynı sorular kabul edilmez !!!</h1>');
+                      // return $this->render('step2',['models'=>$model]);
+                       return $this->redirect(['step2']);            
                     }
                 }
             }
@@ -152,7 +154,6 @@ class CreateController extends \yii\web\Controller
     }
     }
 }
-// soru eklemede hata veriyor aynı isimli soru eklersen
 else if(isset($_SESSION['SoruEkleme'])==true){
     $j=0;
     
@@ -160,6 +161,11 @@ else if(isset($_SESSION['SoruEkleme'])==true){
         $Qmodel->s_id=$_SESSION['Smodel']->id;
         if($Qmodel->validate()){
         $Qmodel->save();
+        }
+        else{
+            Yii::$app->session->setFlash('error', '<h1>Aynı Soru zaten mevcut !!!</h1>');
+            return $this->redirect(['step2']);
+            
         }
     if($Qmodel->type!="textInput"){
         $Omodel=$_SESSION['Omodel'];

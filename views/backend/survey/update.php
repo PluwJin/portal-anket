@@ -38,6 +38,11 @@ h4{
 #ekle{
     margin-left:400px;
 }
+.form-group{
+    display: flex;
+ 
+  justify-content: center;
+}
 
 
 
@@ -94,6 +99,9 @@ h4{
     
     ]); ?> 
      <?= Html::a('Soru Ekle','/admin/anket/create/step2',['class'=>'btn btn-lg btn-success', 'id'=>"ekle"]) ?>
+    </div>
+    <div class='form-group'>
+    <?=Html::a('Geri','/admin/anket/survey', $options = ['class'=>'btn btn-success'])  ?>
     </div>
         
 

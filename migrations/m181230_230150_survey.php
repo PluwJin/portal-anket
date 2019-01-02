@@ -11,7 +11,7 @@ class m181230_230150_survey extends Migration
     public function up()
     {
         $this->createTable('survey', [
-            'id' => $this->integer(11)->notNull(),
+            'id' => $this->primaryKey(),
             'name' => $this->string(150)->notNull(),
             'q_number' => $this->integer(11)->notNull(),
             'creator_id' => $this->integer(11)->notNull(),
@@ -19,12 +19,12 @@ class m181230_230150_survey extends Migration
             'ending_at' => $this->date()->notNull(),
         ],'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4');
         
-        $this->addPrimaryKey('primary11','survey','id');
+        //$this->addPrimaryKey('PR','survey','id');
         $this->createIndex('name','survey','name',true);
 
 
         $this->createTable('questions', [
-            'id' => $this->integer(11)->notNull(),
+            'id' => $this->primaryKey(),
             's_id' => $this->integer(11)->notNull(),
             'name' => $this->string(100)->notNull(),
             'type' => $this->string(50)->notNull(),
@@ -32,23 +32,23 @@ class m181230_230150_survey extends Migration
             'option_number' => $this->integer(11)->defaultValue(null),
         ],'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4'); 
 
-        $this->addPrimaryKey('primary2','questions','id');
+       // $this->addPrimaryKey('PR','questions','id');
         $this->createIndex('s_id','questions',['s_id','name'],true);
         $this->createIndex('foreign','questions','s_id');
 
         $this->createTable('options', [
-            'id' => $this->integer(11)->notNull(),
+            'id' => $this->primaryKey(),
             's_id' => $this->integer(11)->notNull(),
             'q_id' => $this->integer(11)->notNull(),
             'name' => $this->string(100)->notNull(),
         ],'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4');
 
-        $this->addPrimaryKey('primary3','options','id');
+        //$this->addPrimaryKey('PR','options','id');
         $this->createIndex('tek','options',['s_id','q_id','name'],true);
         $this->createIndex('fk','options','q_id');
 
         $this->createTable('answers', [
-            'id' => $this->integer(11)->notNull(),
+            'id' => $this->primaryKey(),
             'user_id' => $this->integer(11)->notNull(),
             's_id' => $this->integer(11)->notNull(),
             'q_id' => $this->integer(11)->notNull(),
@@ -56,13 +56,12 @@ class m181230_230150_survey extends Migration
             'textanswer' => $this->string(100)->defaultValue(null),
         ],'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4');
 
-        $this->addPrimaryKey('primary4','answers','id');
+        //$this->addPrimaryKey('PR','answers','id');
         $this->createIndex('user_id','answers',['user_id','s_id','q_id','o_id'],true);
         $this->createIndex('fksid','answers','s_id');
         $this->createIndex('fkqid','answers','q_id');
         $this->createIndex('fkoid','answers','o_id');
 
-        //burada hata var aynı isimki foreign key olduğundan hata veriyor
 
         $this->addForeignKey('fkoid','answers','o_id','options','id','CASCADE','CASCADE');
         $this->addForeignKey('fkqid','answers','q_id','questions','id','CASCADE','CASCADE');
@@ -81,9 +80,11 @@ class m181230_230150_survey extends Migration
 
     public function down()
     {
-        echo "m181230_230150_survey cannot be reverted.\n";
-
-        return false;
+        $this->dropTable('survey');
+        $this->dropTable('questions');
+        $this->dropTable('options');
+        $this->dropTable('answers');
+        
     }
     
 }

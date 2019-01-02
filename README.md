@@ -3,6 +3,7 @@ Projenin Çalıştırılması
 
 portal dizini altinda ki composer.json dosyasının içerisine aşağıdaki kod eklenir.
 
+
     ....
    "repositories": [
         ....
@@ -22,7 +23,7 @@ portal dizini altinda ki composer.json dosyasının içerisine aşağıdaki kod 
        ....
        
  
-    .   
+       
 portal/backend/config/main.php ve portal/frontend/config/main.php dosyasinda
 
         'modules' => [
@@ -35,20 +36,20 @@ portal/backend/config/main.php ve portal/frontend/config/main.php dosyasinda
     ....
 ],
 
-],
+
+
 seklinde ekleme yapilir.
 
 daha sonra composer update komutu çalıştırılır.
-Son olarak migration islemi olarak komut istemcisinde portal dizinine gelip
-
-php yii migrate --migrationPath=@vendor/kouosl/portal-anket/migrations --interactive=0
+Son olarak migration islemi olarak vagrant ssh ile bağlanıp  cd /var/www/portal dizinine gidilir.
+php yii migrate --migrationPath=@vendor/kouosl/portal-anket/migrations
 komutunu uygulayarak uygulamamizi hazir hale getiriyoruz.
 
 frontend tarafina http://portal.kouosl/anket
 
 backend kismina
 
-http://portal.kouosl/admin/anket/
+http://portal.kouosl/admin/anket
 
 adreslerinden ulasabilirsiniz.
 

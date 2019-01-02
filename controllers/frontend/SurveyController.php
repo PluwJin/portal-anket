@@ -46,7 +46,7 @@ class SurveyController extends Controller
         //session_unset();
         $dataProvider = new ActiveDataProvider([
             'query' => Survey::find(),
-            'pagination'=>['pageSize'=>20],
+            'pagination'=>['pageSize'=>10],
         ]);
 
         return $this->render('index', [

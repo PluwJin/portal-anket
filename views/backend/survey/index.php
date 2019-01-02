@@ -28,6 +28,11 @@ h1{
     justify:center;
     text-align:center;
 }
+.form-group{
+    display: flex;
+ 
+  justify-content: center;
+}
 
 
 </style>
@@ -37,7 +42,7 @@ h1{
 
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(); ?>
+    <?php Pjax::begin(['enablePushState'=>false]); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -60,5 +65,8 @@ h1{
             ],
     ]]); ?> 
     <?php Pjax::end(); ?>
+    <div class='form-group'>
+    <?=Html::a('Geri','/admin/anket', $options = ['class'=>'btn btn-success'])  ?>
+    </div>
     
 </div>

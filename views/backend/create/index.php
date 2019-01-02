@@ -29,11 +29,14 @@ p{
 .content{
     margin-left: 150px;
 }
-.teaser{
 
-    display: block;
- margin-left: 35%;
- margin-top: 35px;
+.form-group{
+    display: flex;
+   
+  justify-content: center;
+}
+.teaser{
+    margin-right:50px;
 }
 </style>
 
@@ -60,7 +63,12 @@ Oluşturma bölümü 3 Basamaktan oluşan bir işlem içerir:
  </li>
  <li>Step 3:Seçenkli sorular için seçeneklerin girilmesi</li>
 </ul>
+
+<div class='form-group'>
 <?= Html::a('Devam Et','/admin/anket/create/step1',['class' =>'teaser']) ?>
+    <?=Html::a('Geri','/admin/anket', $options = ['class'=>'btn btn-success'])  ?>
+    </div>
 </div>
 </div>
+
 

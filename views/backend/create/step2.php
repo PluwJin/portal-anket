@@ -12,6 +12,8 @@ $data['title'] = Html::encode($this->title);
 $this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/anket'];
 $this->params['breadcrumbs'][] =['label' => 'Create','url'=>'/anket/create'];
 $this->params['breadcrumbs'][] = $this->title;
+Yii::$app->session->getFlash('error');
+
 
 ?>
 <script>
@@ -57,6 +59,7 @@ margin-top:20px;
 <h1>Step 2</h1>
 <hr>
 
+
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['enableClientValidation'=>false]); ?>
             
@@ -88,7 +91,12 @@ margin-top:20px;
 
                 <div class="form-group">
                     <?= Html::submitButton('Devam et', ['class' => 'btn btn-primary']) ?>
+                    <?php if(isset($_SESSION['SoruEkleme']) && $_SESSION['SoruEkleme']==true) { ?>
+                    <?= \yii\helpers\Html::a( 'Geri', '/admin/anket/survey',['class' => 'btn btn-success' ,'style'=>'color:black;margin-top:20px']);?>
+                    <?php }?>
+                    <?php if(isset($_SESSION['SoruEkleme'])!=true) { ?>
                     <?= \yii\helpers\Html::a( 'Geri', 'step1',['class' => 'btn btn-success' ,'style'=>'color:black;margin-top:20px']);?>
+                    <?php }?>
                     
                 </div>
               
