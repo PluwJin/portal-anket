@@ -5,7 +5,7 @@ use kouosl\theme\widgets\Portlet;
 
 $this->title = 'Create';
 $data['title'] = Html::encode($this->title);
-$this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/anket'];
+$this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/admin/anket'];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Surveys';
-$this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/anket'];
+$this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/admin/anket'];
 $this->params['breadcrumbs'][] = $this->title;
  Yii::$app->session->getFlash('error');
  Yii::$app->session->getFlash('Ok');

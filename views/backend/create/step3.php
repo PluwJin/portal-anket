@@ -8,8 +8,8 @@ use kouosl\anket\models\Questions;
 
 $this->title = 'Step3';
 $data['title'] = Html::encode($this->title);
-$this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/anket'];
-$this->params['breadcrumbs'][] =['label' => 'Create','url'=>'/anket/create'];
+$this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/admin/anket'];
+$this->params['breadcrumbs'][] =['label' => 'Create','url'=>'/admin/anket/create'];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

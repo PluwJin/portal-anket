@@ -14,7 +14,7 @@ use yii\data\ActiveDataProvider;
 
 $this->title = 'Survey-Result';
 $this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/anket'];
-$this->params['breadcrumbs'][] =['label' => 'Anket','url'=>'/anket/Surveys'];
+$this->params['breadcrumbs'][] =['label' => 'Surveys','url'=>'/anket/survey'];
 $this->params['breadcrumbs'][] = $this->title;
 $Qmodel=Questions::find()->where(['s_id'=>$model->id])->all();
 ?>
@@ -67,12 +67,13 @@ $Qmodel=Questions::find()->where(['s_id'=>$model->id])->all();
             <?php foreach($Omodel as $omodel){
                 $Oacount=Answers::find()->where(['o_id'=>$omodel->id])->count();?>
                 <?php if($oysayisi!=0){ $yuzde=(($Oacount)/$oysayisi)*100; }else {$yuzde=0;} ?>
-                
+                <?=$omodel->name." : %".$yuzde ?>
                 <?= Progress::widget([
-                    'label' => $omodel->name." (Verilen Oy:".($Oacount).")",
+                    
                     'percent' => $yuzde,
-                    'options' => ['style'=>['width'=>'500px']]]);
+                    'options' => ['style'=>['width'=>'500px','display'=>'block']]]);
                 ?>
+               
             <?php } ?>
             <h5><?= "Kullanılan Toplam Oy: ".$oysayisi  ?></h5>
        </div>

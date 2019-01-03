@@ -10,7 +10,7 @@ use yii\grid\GridView;
 
 $this->title = 'Anket Güncelleme: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Surveys', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['update', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 session_unset();
 
