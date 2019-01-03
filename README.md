@@ -1,17 +1,19 @@
 # portal-anket
 Projenin Çalıştırılması
 
-portal dizini altinda ki composer.json dosyasının içerisine aşağıdaki kod eklenir.
+portal dizini altinda ki composer.json dosyasının içerisine repositories kısmına aşağıdaki kod eklenir
 
-
-   "repositories": [
-        ....
+   
+       
         {
         "type": "vcs",
         "url": "https://github.com/PluwJin/portal-anket.git"
     }
-    ....
-    ]
+    
+   
+    
+    
+    
 
 daha sonra vagrant ssh ile bağlanılarak /var/www/portal dizininde:
 "composer require kouosl/portal-anket:dev-master" 
@@ -29,7 +31,7 @@ portal/backend/config/main.php ve portal/frontend/config/main.php dosyasinda
 
     ],
     ....
-],
+
 
 
 
